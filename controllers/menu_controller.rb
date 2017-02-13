@@ -13,8 +13,8 @@ class MenuController
         puts "2 - Create an entry"
         puts "3 - Search for an entry"
         puts "4 - Import entries from a CSV"
-        puts "5 - Exit"
-        puts "6 - View Entry Number <n>"
+        puts "5 - View Entry Number <n>"
+        puts "6 - Exit"
         print "Enter your selection: "
         
         selection = gets.to_i
@@ -36,47 +36,48 @@ class MenuController
                 system "clear"
                 read_csv
                 main_menu
-            when 5 
+            when 5
+                system "clear"
+                view_entry_by_index
+                main_menu
+            when 6 
                 puts "Good-bye!"
                 exit(0)
-            when 6
-                system "clear"
-                puts "Enter the entry's index that you want: "
-                entry_num = gets.chomp
-                
-                while true
-                    if entry_num == "menu"
-                            main_menu
-                    end
-                    
-                    valid_input = Integer(entry_num) rescue false
-
-                    if valid_input
-                        entry = address_book.entries[entry_num.to_i]
-                        
-                        unless entry.nil?
-                            puts entry
-                            entry_submenu(entry)
-                        end
-                        
-                        system "clear"
-                        puts "No entry at that index..."
-                        puts "type 'menu' to return to main menu"
-                        puts "Enter the entry's index that you want: "
-                        entry_num = gets.chomp
-                    else 
-                        system "clear"
-                        puts "Invalid Input! Please enter an integer!!"
-                        puts "type 'menu' to return to main menu"
-                        puts "Enter the entry's index that you want: "
-                        entry_num = gets.chomp
-                    end
-                end
             else
                 system "clear"
                 puts "Sorry, that is not a valid input"
                 main_menu
         end
+    end
+    
+    def view_entry_by_index
+        puts "Enter index number for desired entry: "
+        entry_index = gets.chomp
+        
+        if entry_index == 'menu'
+            main_menu
+        end
+        
+        valid_input_check = Integer(entry_index) rescue false
+        entry = address_book.entries[entry_index.to_i]
+        
+        if valid_input_check
+            unless entry.nil?
+                puts entry
+                entry_submenu(entry)
+            else
+                system "clear"
+                puts "No entry at that Index.\n"
+                view_entry_by_index
+            end
+        else
+            system "clear"
+            puts "Invalid input, please enter an Integer."
+            puts "(Type 'menu' to return to main menu.)\n"
+            view_entry_by_index
+        end
+            
+            
     end
     
     def view_all_entries
